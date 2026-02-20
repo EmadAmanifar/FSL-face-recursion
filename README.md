@@ -105,7 +105,18 @@ The examples below show that both models successfully match the query to the cor
 | Contrastive | ![Contrastive inference](images/contrastive_inference.png) |
 | Triplet     | ![Triplet inference](images/triplet_inference.png) |
 
-*For each query (leftmost column), the three closest support images are shown along with their distance scores. Correct matches (same identity) are highlighted.*
+## ✅️⚠️ Attention: Query vs. Support Image Distances
+In this plot, the query image is displayed on the left. For each query image, there are 5 corresponding support images from the same class. The model has successfully recognized these support images, producing very small distances between them and the query image. The distances are sorted from the smallest to the largest, clearly showing the similarity ranking.
+
+Each row contains 7 images:
+
+The first image is the query image.
+
+The next 5 images are the support images from the same class as the query, which the model correctly identified with very small distances.
+
+The seventh (last) image is unrelated to the query class. This image demonstrates that the model assigns a much larger distance to a dissimilar image, showing that it can effectively distinguish between similar and dissimilar images.
+
+Overall, this plot clearly illustrates that the model can find the most similar and relevant images, assign small distances to them, assign large distances to unrelated images, and sort all images in ascending order of distance.
 
 ---
 
