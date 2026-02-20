@@ -33,7 +33,6 @@ During training, we **reserve three folders (`000009`, `000032`, `000046`)** for
 These held‑out identities are later used to form the **support set** (5 images each) and **query set** (1 image each).
 
 ![Sample images from the dataset](images/sample_images.png)  
-*Figure 1: Random face images from the training set with their labels.*
 
 ---
 
@@ -43,7 +42,6 @@ These held‑out identities are later used to form the **support set** (5 images
 - Positive pairs: two images of the **same** identity.
 - Negative pairs: two images of **different** identities.  
   ![Example pairs](images/contrastive_pairs.png)  
-  *Figure 2: Sample anchor‑positive and anchor‑negative pairs.*
 
 - The dataset is transformed into a `tf.data.Dataset` with on‑the‑fly preprocessing (resize to 160×160, normalize).
 
@@ -67,9 +65,6 @@ def contrastive_loss(y_true, y_pred):
 - Batch size: 32.
 - 5 epochs.
 
-https://images/contrastive_training.png
-Figure 3: Accuracy and loss during training (epochs 1–5).
-
 ## 4. Inference: Support & Query Sets
 - From each held‑out folder, we select:
 - Support set: 5 images → used to create a small evaluation dataset (30 pairs after pairing).
@@ -78,10 +73,12 @@ Figure 3: Accuracy and loss during training (epochs 1–5).
 - Each query image is paired with every support image, and the model outputs similarity scores (Euclidean distance).
 The closest support images (lowest distance) are considered the most similar identities.
 
-https://images/support_set.png
-Figure 4: Six random support images with their labels.
+## support_set
+![support_set](images/support_set.png)  
 
-https://images/query_set.png
+## query_set
+![query_set](images/query_set.png)  
+
 Figure 5: The three query images (one per held‑out folder).
 
 ---
@@ -95,8 +92,20 @@ Figure 5: The three query images (one per held‑out folder).
 - Training uses the same FaceNet backbone and dense layers.
 - Inference identical to the contrastive approach.
 
-https://images/triplet_training.png
-Figure 6: Triplet loss and accuracy over epochs.
+---
+
+## 🔍 Final Inference Results
+
+After training, both models are evaluated on the held‑out identities using the support‑query protocol.  
+For each query image, we compute its distance to every support image and retrieve the closest matches.  
+The examples below show that both models successfully match the query to the correct identity (the support images from the same folder have the smallest distances).
+
+| Model       | Query‑to‑Support matching example |
+|-------------|----------------------------------|
+| Contrastive | ![Contrastive inference](images/contrastive_inference.png) |
+| Triplet     | ![Triplet inference](images/triplet_inference.png) |
+
+*For each query (leftmost column), the three closest support images are shown along with their distance scores. Correct matches (same identity) are highlighted.*
 
 ---
 
